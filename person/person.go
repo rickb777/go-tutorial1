@@ -18,7 +18,7 @@ const (
 	Other
 )
 
-// Address holds
+// Address holds an address of a place.
 type Address struct {
 	UUID     uuid.UUID    `json:"id"`
 	Address  string       `json:"address,omitempty"`
