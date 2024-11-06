@@ -37,6 +37,14 @@ func RandomAddress() person.Address {
 
 var (
 	firstNames = map[person.Gender][]string{
+		person.Unspecified: {
+			"Andy", "Chris",
+		},
+
+		person.Other: {
+			"Andy", "Chris",
+		},
+
 		person.Female: {
 			"Ann", "Alice", "Belinda", "Charlotte", "Christine", "Chloë",
 			"Daisy", "Darcie", "Delilah", "Emma", "Eloise",
@@ -97,8 +105,12 @@ func RandomMaleOrFemale() person.Gender {
 func RandomAdult(gender person.Gender) person.Person {
 	titleIdx := rand.IntN(len(titles[gender]))
 	adult := randomPerson(gender, rand.IntN(92)+18)
-	adult.Title = titles[gender][titleIdx]
+	if titleIdx < len(titles[gender]) {
+		adult.Title = titles[gender][titleIdx]
+	}
 	adult.Addresses = append(adult.Addresses, RandomAddress())
+	movedIn := date.Today().AddDate(0, 0, 7) - date.Date(rand.IntN(3652))
+	adult.MovedIn = append(adult.MovedIn, movedIn)
 	return adult
 }
 
