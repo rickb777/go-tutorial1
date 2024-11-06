@@ -4,8 +4,36 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/rickb777/date/v2"
 	"github.com/rickb777/go-tutorial1/person"
+	"github.com/rickb777/go-tutorial1/person/country"
 	"math/rand/v2"
 )
+
+var addresses = []person.Address{
+	{Address: "1 Old Down Rd", City: "Andover", Postcode: "SP10 3JP ", Country: country.GB},
+	{Address: "46 Princess Anne Rd", City: "Boston", Postcode: "PE21 9AP ", Country: country.GB},
+	{Address: "Flat 1a, Tŷ Gwyn, 13 Stryd y Dŵr", City: "Bridgend", Postcode: "CF314AD ", Country: country.GB},
+	{Address: "62 Oxford St", City: "Burnham-on-Sea", Postcode: "TA81EW", Country: country.GB},
+	{Address: "Bryn Ogwen, England Rd N", City: "Caernarfon", Postcode: "LL55 1HS", Country: country.GB},
+	{Address: "6 St Mary's Place", City: "Chippenham", Postcode: "SN15 1EN", Country: country.GB},
+	{Address: "20 Middlemarch Rd", City: "Coventry", Postcode: "CV6 3GF ", Country: country.GB},
+	{Address: "451 Braunstone Ln", City: "Leicester", Postcode: "LE3 3DD", Country: country.GB},
+	{Address: "2 Stockton Gardens", City: "London", Postcode: "N17 7HY", Country: country.GB},
+	{Address: "29 St John's Rd", City: "Newbury", Postcode: "RG14 7PY ", Country: country.GB},
+	{Address: "29, Plymouth Rd", City: "Penarth", Postcode: "CF64 3DA", Country: country.GB},
+	{Address: "10 Leys Ave", City: "Rothwell", Postcode: "NN14 6JF", Country: country.GB},
+	{Address: "62 Pankhurst Cres", City: "Stevenage", Postcode: "SG2 0QF", Country: country.GB},
+	{Address: "22 MacDonald Dr", City: "Stirling", Postcode: "FK7 9ER", Country: country.GB},
+	{Address: "15 Thrushel Close", City: "Swindon", Postcode: "SN25 3PP", Country: country.GB},
+	{Address: "82 Woodland Rd", City: "Wolverhampton", Postcode: "WV3 8AW", Country: country.GB},
+}
+
+// RandomAddress picks a random address from a short list.
+func RandomAddress() person.Address {
+	idx := rand.IntN(len(addresses))
+	return addresses[idx]
+}
+
+//-------------------------------------------------------------------------------------------------
 
 var (
 	firstNames = map[person.Gender][]string{
@@ -46,7 +74,7 @@ func randomPerson(gender person.Gender, age int) person.Person {
 
 	name := firstNames[gender][firstIdx] + " " + lastNames[lastIdx]
 
-	ageInDays := age*daysPerYearGregorianE4 + (rand.IntN(365) * 10000)
+	ageInDays := (age*daysPerYearGregorianE4 + (rand.IntN(365) * 10000)) / 10000
 
 	return person.Person{
 		UUID:      uuid.Must(uuid.NewV4()),
@@ -57,11 +85,20 @@ func randomPerson(gender person.Gender, age int) person.Person {
 	}
 }
 
+func RandomGender() person.Gender {
+	return person.Gender(rand.IntN(len(person.AllGenders)))
+}
+
+func RandomMaleOrFemale() person.Gender {
+	return person.Gender(rand.IntN(2)) + person.Male
+}
+
 // RandomAdult invents a person who is at least 18 years old.
 func RandomAdult(gender person.Gender) person.Person {
 	titleIdx := rand.IntN(len(titles[gender]))
 	adult := randomPerson(gender, rand.IntN(92)+18)
 	adult.Title = titles[gender][titleIdx]
+	adult.Addresses = append(adult.Addresses, RandomAddress())
 	return adult
 }
 
@@ -69,74 +106,3 @@ func RandomAdult(gender person.Gender) person.Person {
 func RandomChild(gender person.Gender) person.Person {
 	return randomPerson(gender, rand.IntN(18))
 }
-
-//-------------------------------------------------------------------------------------------------
-
-//var addresses = []person.Address{
-//	{
-//		Address:  "Flat 1a, Tŷ Gwyn, 13 Stryd y Dŵr",
-//		City:     "Bridgend",
-//		Postcode: "CF314AD ",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "Bryn Ogwen, England Rd N",
-//		City:     "Caernarfon",
-//		Postcode: "LL55 1HS",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "22 MacDonald Dr",
-//		City:     "Stirling",
-//		Postcode: "FK7 9ER",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "2 Stockton Gardens",
-//		City:     "London",
-//		Postcode: "N17 7HY",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "10 Leys Ave",
-//		City:     "Rothwell",
-//		Postcode: "NN14 6JF",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "62 Pankhurst Cres",
-//		City:     "Stevenage",
-//		Postcode: "SG2 0QF",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "6 St Mary's Place",
-//		City:     "Chippenham",
-//		Postcode: "SN15 1EN",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "62 Oxford St",
-//		City:     "Burnham-on-Sea",
-//		Postcode: "TA81EW",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "29, Plymouth Rd",
-//		City:     "Penarth",
-//		Postcode: "CF64 3DA",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "15 Thrushel Close",
-//		City:     "Swindon",
-//		Postcode: "SN25 3PP",
-//		Country:  country.GB,
-//	},
-//	{
-//		Address:  "82 Woodland Rd",
-//		City:     "Wolverhampton",
-//		Postcode: "WV3 8AW",
-//		Country:  country.GB,
-//	},
-//}
