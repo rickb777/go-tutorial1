@@ -6,9 +6,9 @@ toolchain go1.24.3
 
 require (
 	github.com/gofrs/uuid v4.4.0+incompatible
-	github.com/rickb777/date/v2 v2.1.4
-	github.com/rickb777/enumeration/v3 v3.5.2
-	gotest.tools/v3 v3.5.1
+	github.com/rickb777/date/v2 v2.1.11
+	github.com/rickb777/enumeration/v3 v3.5.3
+	gotest.tools/v3 v3.5.2
 )
 
 require (
